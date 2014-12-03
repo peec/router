@@ -1,0 +1,21 @@
+{
+    "name": "pkj/router",
+    "type": "library",
+    "description": "Router component",
+    "homepage": "http://github.com/peec/router",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Petter Kjelkenes",
+            "email": "kjelkenes@gmail.com",
+            "homepage": "http://pkj.no",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {"Pkj\\Router": "src/"}
+    },
+    "require": {
+        "php": ">=5.4.0"
+    }
+}

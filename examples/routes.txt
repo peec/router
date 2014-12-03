@@ -1,0 +1,35 @@
+#
+# Routes file
+# -------------------
+#
+# Pattern to add routes:
+#     [Name of route]        [HTTP METHOD or *]      [URL SPECIFICATION]      [Callable assignment: Classpath.method]
+#
+# You can set variables with %set
+# Variables:
+#     exact_match
+#     Automatically wrap the url specification with the regular expression pattern ^$ to match all routes.
+#
+
+
+
+# Routes below now don't need to add ^$ to URL because its added automatically.
+%set exact_match 1
+
+
+# Our homepage, thus only allow get requests.
+home      GET      /        SomeController.home
+
+# Some blog
+blog      *      /blog        SomeController.blog
+
+
+# From now on disable automatically insert of ^$.
+%set exact_match 0
+
+# And we need to add ^$ ourselves if not we match urls like /news321321 and /test/news and not only /news
+news      *      ^/news$        SomeController.news
+
+
+
+
