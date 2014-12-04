@@ -3,6 +3,15 @@
 Allows your project to integration a flexible `Router` component.
 
 
+## Features
+
+- Can be plugged into any existing code.
+- Programmatic route definitions
+- Configuration based routes from file
+- Any callable can be assigned to a route
+- Routes with named or un-named arguments.
+- Reverse routing
+
 
 ## Installing
 
@@ -11,8 +20,6 @@ Using composer:
 ```bash
 composer install pkj/router@dev
 ```
-
-
 
 ## Setup the router and creating your first route
 
@@ -60,6 +67,76 @@ arguments like this `^/hello/:world$` or even more advanced - a named argument w
 `^/hello/:<\d+>world$`. As you can see, this is quite flexible.
 
 
+
+## Controllers as classes
+
+Normally you would want to create classes that extends a base controller to have access to say forexample the router
+so you can access `reverse routing`, etc.
+
+This is possible using the `Router::setControllerFactory` method, it makes it possible to define a way to initialize
+the controllers based on callee router found.
+
+Take this example:
+
+```php
+
+class BaseController {
+    protected $router;
+    public function setRouter (\Pkj\Router\Router $router) {
+        $this->router = $router;
+    }
+}
+
+// Here we use the BaseController.
+$router->setControllerFactory(function ($callable, $router) {
+    if (is_array($callable)) {
+        $controller = new $callable[0];
+        if ($controller instanceof BaseController) {
+            $controller->setRouter($router);
+        }
+        // Redefine $callable.
+        $callable = array($controller, $callable[1]);
+    }
+    return $callable;
+});
+
+```
+
+The router figures out what `Controller` and `Method` to run - when a factory is set it will filter the callable
+through the factory. This means we can create a new instance of the controller and using setters to initialize other
+components.
+
+
+## Routes configuration file
+
+It's also possible to load routes from a normal text file with custom configuration. Note that the syntax is special
+to the routes file. It's not following any normal standard like yaml, json and xml because route configuration should
+be as easy as possible and logical to read.
+
+Use the `Router::readFile` method to load a routing file like below:
+
+```php
+
+// Read in all the routes.
+$router->readFile(__DIR__ . '/routes.txt');
+
+```
+
+The routes file can contain simple route definitions:
+
+```php
+
+%set exact_match 1
+home      GET           /                             SomeController.home
+home      GET           /blog                         BlogController.all
+home      PUT|POST      /blog                         BlogController.create
+home      *             /all-methods-allowed-here     SomeController.anyMethod
+
+```
+
+Notice the `%set exact_match 1`, this means that, all urls defined like the `/` needs to be an exact match. It
+basically means that you wrap it in regular expression syntax like this: `^/$`, and all routes you define below the set
+statement will have this behavior. To disable it you just use `%set exact_match 0` and define routes below.
 
 
 
