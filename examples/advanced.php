@@ -1,4 +1,9 @@
 <?php
+/**
+ * This file demonstrates using configuration to add routes, it also demonstrates how to use object oriented
+ * controllers - using an MVC approach (exclude M/V).
+ */
+
 
 require "../vendor/autoload.php";
 
@@ -7,6 +12,9 @@ use \Pkj\Router\Router,
 
 
 
+/**
+ * Class BaseController
+ */
 class BaseController {
     protected $router;
     public function setRouter (\Pkj\Router\Router $router) {

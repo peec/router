@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/pkj/router.png?branch=master)](http://travis-ci.org/pkj/router)
+
+
 # PHP Router Component
 
 Allows your project to integration a flexible `Router` component.
